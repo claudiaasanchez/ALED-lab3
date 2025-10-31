@@ -9,6 +9,8 @@ package es.upm.dit.aled.lab3.binary;
  */
 public class Suffix {
 	public final int suffixIndex;
+	// Modela un sufijo, que no es más que un entero que indica en qué posición de
+	//content se encuentra dicho sufijo.
 
 	/**
 	 * Creates a new Suffix.
