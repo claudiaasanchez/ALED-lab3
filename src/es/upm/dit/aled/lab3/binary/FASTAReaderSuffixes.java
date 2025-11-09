@@ -23,6 +23,7 @@ import es.upm.dit.aled.lab3.FASTAReader;
 public class FASTAReaderSuffixes extends FASTAReader {
 	protected Suffix[] suffixes;
 
+	// Extiende FASTAReader para soportar la búsqueda binaria.
 	/**
 	 * Creates a new FASTAReader from a FASTA file.
 	 * 
@@ -40,6 +41,8 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		// Sorts the data
 		sort();
 	}
+	//En el constructor, además de lo que ya hacía su clase madre, también rellena suffixes y
+	//lo ordena
 
 	/*
 	 * Helper method that creates a array of integers that contains the positions of

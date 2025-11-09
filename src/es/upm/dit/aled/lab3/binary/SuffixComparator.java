@@ -14,6 +14,9 @@ public class SuffixComparator implements Comparator<Suffix> {
 	// we need a reference to it to access the data.
 	private final FASTAReaderSuffixes reader;
 
+	//Extiende el interfaz Comparator para permitir comparar dos sufijos.
+	//Aquí “comparar” significa saber cuál va antes a la hora de ordenar dos de ellos.
+
 	/**
 	 * Constructs a SuffixComparator, initializing it with the data provider.
 	 * 
