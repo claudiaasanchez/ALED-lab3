@@ -125,6 +125,8 @@ public class FASTAReaderSuffixes extends FASTAReader {
 			}
 		}
 		return positionsPattern;
+		//continuar
+		
 	}
 
 	public static void main(String[] args) {
