@@ -122,7 +122,7 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		if (found) { 
 			int i = 1;
 			while(true) {
-				
+				//
 			}
 		}
 		return positionsPattern;
