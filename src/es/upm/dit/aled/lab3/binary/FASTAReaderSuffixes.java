@@ -83,50 +83,89 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	@Override
 	public List<Integer> search(byte[] pattern) {
 		// TODO
-		List<Integer> positionsPattern = new ArrayList<>();
+		List<Integer> matches = new ArrayList<>();
 		/*Inicializacion
 		 Establece los límites de la búsqueda binaria (lo y hi) sobre suffixes;
 		 crea un boolean found que inicialmente es false para determinar si se ha encontrado el
 		 pattern (el patrón); e inicializa un contador index a 0, que rastrea el carácter actual que
 		 se está comparando con el pattern.
 		 */
+		
 		int lo = 0;
 		int hi = suffixes.length;
 		boolean found = false;
 		int index = 0;
+		
+		int posSuffix;
 		int posInSuffixes = 0;
+		
 		/*Comparación iterativa (bucle de búsqueda binaria): En cada iteración, calcula el
 		índice medio (m) en el rango de búsqueda actual.
 		 * 		
 		 */
+		
 		while(!found && (hi-lo>1)) { //no se haya encontrado y espacio de busqueda sea mas que 1
-			int m = (int) Math.floor(lo +((hi-lo)/2));
-			int posSuffix = suffixes[m].suffixIndex;
-			//comparo el valor del patron con el del content
+			int m = (hi+lo)/2;
+			posSuffix = suffixes[m].suffixIndex;
+			
+			//comparo el valor del patron con el del content, aumento index para verificar el siguiente caracter
 			if (pattern[index] == content[posSuffix + index]) {
 				index++;
-			}else if (pattern[index] < content[posSuffix + index]) {
-				hi = m--;
-				index = 0;
-			}else if (pattern[index] > content[posSuffix + index]) {
-				lo = m++;
-				index = 0;
 			}
+			//si el index ocincide con el pattern.length (ultimo caracter) y coincide con el del sufijo, es una secuencia correcta
 			if(index == pattern.length && (pattern[index - 1] == content[posSuffix + index - 1])) {
-				positionsPattern.add(posSuffix);
+				matches.add(posSuffix);
 				found = true;
 				posInSuffixes = m;
 			}
+			else if (pattern[index] < content[posSuffix + index]) {
+				hi = m--;
+				index = 0;
+			}
+			else if (pattern[index] > content[posSuffix + index]) {
+				lo = m++;
+				index = 0;
+			}
+			
 		}
 		//para encontrar mas de una posicion 
 		if (found) { 
-			int i = 1;
+			//chequeo los indices previos, por si hay mas coincidencias
+			int indexSubstract = 1;
 			while(true) {
+				posSuffix = suffixes[posInSuffixes - indexSubstract].suffixIndex;
+				boolean isAlsoMatch = true;
+				for (int s = 0; s < pattern.length; s++) {
+					if (pattern[s] != content[posSuffix + s]) {
+						isAlsoMatch = false;
+						break;
+					}
+				}
+				if (isAlsoMatch) {
+					matches.add(posSuffix);
+					indexSubstract++;
+				} else
+					break;
+			}
+			//chequeo los indices posteriores, por si hay mas coincidencias
+			int indexAdd = 1;
+			while (true) {
+				posSuffix = suffixes[posInSuffixes + indexAdd].suffixIndex;
+				boolean isAlsoMatch = true;
+				for (int s = 0; s < pattern.length; s++) {
+					if (pattern[s] != content[posSuffix + s]) {
+						isAlsoMatch = false;
+						break;
+					}
+				}
+				if (isAlsoMatch) {
+					matches.add(posSuffix);
+					indexAdd++;
+				} else
+					break;
 			}
 		}
-		return positionsPattern;
-		//continuar
-		
+		return matches;
 	}
 
 	public static void main(String[] args) {
